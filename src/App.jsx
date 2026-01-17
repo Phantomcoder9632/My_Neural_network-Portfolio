@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { ScrollControls, Scroll } from '@react-three/drei'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -9,6 +9,18 @@ import CameraRig from './CameraRig'
 
 export default function App() {
   const [started, setStarted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect Screen Size for "pages" calculation
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is standard tablet/mobile width
+    };
+    
+    checkMobile(); // Check on load
+    window.addEventListener('resize', checkMobile); // Check on resize
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div style={{ width: '100vw', height: '100vh', background: 'black', overflow: 'hidden' }}>
@@ -18,14 +30,11 @@ export default function App() {
         {!started && <LoadingScreen onStarted={() => setStarted(true)} />}
       </AnimatePresence>
 
-      {/* MAIN 3D SITE - Cinematic Focus Entry */}
+      {/* MAIN 3D SITE */}
       {started && (
         <motion.div 
-            // Starts BLURRY and ZOOMED IN (Like coming out of hyperspace)
             initial={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }} 
-            // Resolves to CLEAR and SHARP
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}   
-            // 2-second ease-out for a very smooth landing
             transition={{ duration: 2, ease: "easeOut" }} 
             style={{ width: "100%", height: "100%" }}
         >
@@ -34,7 +43,8 @@ export default function App() {
             <ambientLight intensity={0.5} />
             
             <ScrollControls 
-              pages={10} 
+              // DYNAMIC PAGES: 20 for Mobile (Tall), 10 for PC (Wide)
+              pages={isMobile ? 20 : 10} 
               damping={0.2} 
               style={{ scrollbarWidth: 'none' }}
             >
