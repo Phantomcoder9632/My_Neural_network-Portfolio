@@ -351,78 +351,77 @@ const SkillCard = ({ skill, color, glow }) => {
 
 // ---- SKILLS SECTION ----
 const SkillsSection = ({ playSound }) => {
-  const [activeTab, setActiveTab] = useState('languages');
-  const active = skillCategories.find(c => c.key === activeTab);
-
   return (
-    <motion.div
-      initial="hidden" whileInView="visible"
-      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.6 } } }}
-      style={{ width: '100%' }}
-    >
+    <div style={{ width: '100%', maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '60px' }}>
       <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '40px', color: 'white' }}>TECHNICAL ARSENAL</h2>
+      
+      {skillCategories.map((category) => (
+        <div key={category.key} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          
+          {/* Category Header */}
+          <div style={{ 
+            display: 'flex', alignItems: 'center', gap: '15px', 
+            borderBottom: `2px solid ${category.glow}`, paddingBottom: '10px' 
+          }}>
+            <h3 style={{ 
+              color: category.color, fontSize: '1.2rem', margin: 0, 
+              letterSpacing: '2px', textShadow: `0 0 10px ${category.glow}` 
+            }}>
+              {category.label}
+            </h3>
+          </div>
 
-      {/* Category Tabs */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px', flexWrap: 'wrap' }}>
-        {skillCategories.map(cat => (
-          <motion.button
-            key={cat.key}
-            onClick={() => { setActiveTab(cat.key); playSound && playSound('click'); }}
-            onMouseEnter={() => playSound && playSound('hover')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            style={{
-              background: activeTab === cat.key ? cat.color : 'rgba(255,255,255,0.05)',
-              color: activeTab === cat.key ? '#000' : cat.color,
-              border: `1px solid ${cat.color}`,
-              borderRadius: '50px',
-              padding: '10px 26px',
-              fontSize: '0.78rem',
-              fontWeight: 'bold',
-              letterSpacing: '1.5px',
-              cursor: 'pointer',
-              boxShadow: activeTab === cat.key ? `0 0 16px ${cat.glow}` : 'none',
-              transition: 'all 0.3s ease',
-            }}
-          >
-            {cat.label}
-          </motion.button>
-        ))}
-      </div>
-
-      {/* Icon Grid */}
-      <motion.div
-        key={activeTab}
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
-        style={{
-          maxWidth: '700px', margin: '0 auto',
-          background: 'rgba(0,0,0,0.4)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderRadius: '24px',
-          border: `1px solid ${active.color}22`,
-          boxShadow: `0 0 60px ${active.glow}`,
-          padding: '36px 28px',
-        }}
-      >
-        {/* Top accent line */}
-        <div style={{ height: '2px', borderRadius: '2px', background: `linear-gradient(90deg, transparent, ${active.color}, transparent)`, marginBottom: '28px' }} />
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
-          {active.skills.map((skill, i) => (
-            <motion.div
-              key={skill.name}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-            >
-              <SkillCard skill={skill} color={active.color} glow={active.glow} />
-            </motion.div>
-          ))}
+          {/* Glowing Icon Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+            gap: '20px',
+            width: '100%'
+          }}>
+            {category.skills.map((skill, index) => (
+              <motion.div
+                key={skill.name}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                onMouseEnter={() => playSound && playSound("hover")}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  borderRadius: '16px',
+                  padding: '24px 16px',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px',
+                  color: 'rgba(255,255,255,0.8)',
+                  boxShadow: `inset 0 0 0 transparent, 0 0 0 transparent`,
+                  transition: 'all 0.3s ease',
+                  cursor: 'default',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                whileHover={{
+                  color: category.color,
+                  borderColor: category.glow,
+                  background: `linear-gradient(145deg, ${category.glow}11, transparent)`,
+                  boxShadow: `0 10px 30px -10px ${category.glow}`,
+                  y: -5
+                }}
+              >
+                {/* Top Inner Glow Line */}
+                <div style={{ position: 'absolute', top: 0, left: '10%', right: '10%', height: '1px', background: `linear-gradient(90deg, transparent, ${category.color}88, transparent)` }} />
+                
+                <div style={{ fontSize: '2.5rem', filter: `drop-shadow(0 0 8px ${category.glow})` }}>
+                  {skill.icon}
+                </div>
+                <span style={{ fontSize: '0.9rem', fontWeight: '500', letterSpacing: '0.5px' }}>
+                  {skill.name}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </motion.div>
-    </motion.div>
+      ))}
+    </div>
   );
 };
 
@@ -590,7 +589,7 @@ export default function Interface() {
             
             <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(45%, 1fr))', 
                 gap: '24px',
                 width: '100%',
                 maxWidth: '1200px',
@@ -620,9 +619,18 @@ export default function Interface() {
                             <div style={{ height: '4px', width: '100%', background: `linear-gradient(90deg, transparent, ${tColor}, transparent)` }} />
                             
                             <div style={{ padding: '32px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                <div style={{ marginBottom: '20px' }}>
-                                    <h3 style={{ color: '#fff', fontSize: '1.4rem', margin: '0 0 8px 0', lineHeight: '1.3' }}>{project.title}</h3>
-                                    <span style={{ color: tColor, fontSize: '0.75rem', letterSpacing: '1px', fontWeight: 'bold', textTransform: 'uppercase' }}>{project.subtitle}</span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '20px' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <h3 style={{ color: '#fff', fontSize: '1.4rem', margin: '0 0 8px 0', lineHeight: '1.3' }}>{project.title}</h3>
+                                        <span style={{ color: tColor, fontSize: '0.75rem', letterSpacing: '1px', fontWeight: 'bold', textTransform: 'uppercase' }}>{project.subtitle}</span>
+                                    </div>
+                                    <a href={project.github} target="_blank" rel="noopener noreferrer" style={{
+                                        color: '#000', background: tColor, padding: '6px 14px', borderRadius: '20px', 
+                                        textDecoration: 'none', fontWeight: 'bold', fontSize: '0.75rem', 
+                                        boxShadow: `0 0 15px ${tColor}88`, whiteSpace: 'nowrap', marginTop: '4px'
+                                    }}>
+                                        GITHUB ↗
+                                    </a>
                                 </div>
                                 
                                 <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: 'rgba(255,255,255,0.7)', flex: 1, marginBottom: '25px' }}>
