@@ -1,6 +1,8 @@
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useRef, useEffect } from 'react'
-import { FaGithub, FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaBrain, FaFileDownload } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaBrain, FaFileDownload,
+  FaPython, FaDatabase, FaJava, FaGitAlt, FaFigma, FaCode, FaRobot, FaMicrophone, FaServer, FaProjectDiagram } from 'react-icons/fa'
+import { SiPytorch, SiTensorflow, SiOpencv, SiGooglecolab, SiCplusplus, SiReact, SiDocker, SiScikitlearn, SiFastapi } from 'react-icons/si'
 import emailjs from '@emailjs/browser'
 
 // --- AUDIO ENGINE (INTERACTIVE) ---
@@ -85,42 +87,54 @@ const useAudioInterface = () => {
 // --- 1. PROJECT DATA ---
 const projects = [
     {
+        id: 11,
+        title: "WikiSentinel: Autonomous Vandalism Detection",
+        subtitle: "Agentic RAG / Kappa Architecture",
+        tech: ["Python", "Llama 3", "Pathway", "Docker", "Gemini Vision"],
+        github: "#", 
+        description: "Protecting open-source knowledge with Agentic RAG. A real-time processing pipeline that treats all data as motion, verifying text and images against global policy documents instantly.",
+        points: [
+            "🏆 Won 2nd Prize for implementing robust zero-bottleneck data processing.",
+            "Implemented Kappa Architecture via Pathway to process 300+ edits/min.",
+            "Integrated Llama 3 & Tavily API to verify edits against Wikipedia guidelines, reducing false positives by 40%.",
+            "Built a dedicated Gemini Vision lane to detect and flag NSFW visual content in real-time."
+        ]
+    },
+    {
+        id: 12,
+        title: "Velloc: Real-Time AI Gesture Media Engine",
+        subtitle: "Computer Vision / Edge AI",
+        tech: ["React.js", "FastAPI", "MediaPipe", "Scikit-Learn", "WebSockets"],
+        github: "#",
+        description: "A touchless, low-latency interface for the future of media consumption. Eliminating physical contact requirements for media control using 3D spatial landmarks.",
+        points: [
+            "Established a <10ms WebSocket pipeline between React frontend and FastAPI backend for instant-feel control.",
+            "Extracted 63-point 3D hand landmarks via MediaPipe, training a Random Forest to recognize 16 distinct gestures.",
+            "Developed 'Fist-to-Arm' state-machine logic with dynamic cooldowns to prevent accidental triggers."
+        ]
+    },
+    {
         id: 1,
         title: "Sleep Apnea AI",
         subtitle: "Healthcare / Deep Learning",
-        tech: ["Random Forest", "Python", "PyTorch", "PPG Signals"],
+        tech: ["Random Forest", "Python", "PyTorch"],
         github: "https://github.com/Phantomcoder9632/Apneoa-event-prediction-Using-PPG-signal.git",
         description: "A non-invasive detection system that utilizes Photoplethysmogram (PPG) signals from common wearable devices to detect undiagnosed sleep apnea.",
         points: [
             "Achieved 92% classification accuracy using a Random Forest algorithm.",
             "Processed raw physiological data using Python (Pandas/NumPy) to extract meaningful features.",
-            "Designed a real-time inference pipeline capable of running on edge devices."
         ]
     },
     {
         id: 2,
         title: "SoundCo Sync",
         subtitle: "Distributed Systems / Audio Engineering",
-        tech: ["WebRTC", "Node.js", "Socket.io", "UDP", "React Native"],
+        tech: ["WebRTC", "Node.js", "Socket.io", "React Native"],
         github: "https://github.com/Phantomcoder9632/SoundCo--Audio-Transmission-App.git",
         description: "An engineering challenge in distributed systems allowing multiple Android devices to play music in perfect sync over local Wi-Fi (No Internet required).",
         points: [
             "Engineered a peer-to-peer mesh using WebRTC and Socket.io for millisecond-level latency.",
-            "Implemented UDP broadcasting for automatic server discovery on the local network.",
-            "Utilized Android Foreground Services to ensure continuous playback even when devices are locked."
-        ]
-    },
-    {
-        id: 3,
-        title: "Screen Time Research",
-        subtitle: "Data Science / Behavioral Analytics",
-        tech: ["LSTM", "PyTorch", "Linear Regression", "Data Analytics"],
-        github: "https://github.com/YOUR_USERNAME/research-repo",
-        description: "A longitudinal study examining the correlation between smartphone usage patterns, blue light exposure, and sleep quality.",
-        points: [
-            "Applied Long Short-Term Memory (LSTM) networks to forecast future sleep outcomes based on historical usage data.",
-            "Utilized Linear Regression to quantify the impact of specific apps and usage times on sleep efficiency.",
-            "Filled critical research gaps by employing objective monitoring rather than self-reported surveys."
+            "Implemented UDP broadcasting for automatic server discovery on the local network."
         ]
     }
 ];
@@ -236,16 +250,190 @@ const ContactForm = ({ playSound }) => {
 
 const themeColors = ['#00f3ff', '#bd00ff', '#ffd700'];
 
+// ---- NAV CONFIG ----
+const navItems = [
+  { label: 'Home',            id: 'home'        },
+  { label: 'About Me',        id: 'education'   },
+  { label: 'Work Experience', id: 'internships' },
+  { label: 'Skills',          id: 'skills'      },
+  { label: 'Projects',        id: 'projects'    },
+  { label: 'Contact Me',      id: 'contact'     },
+];
+
+// ---- SKILLS DATA (tabbed) ----
+const skillCategories = [
+  {
+    key: 'languages',
+    label: '// DEV & WEB',
+    color: '#00f3ff',
+    glow: 'rgba(0,243,255,0.25)',
+    skills: [
+      { name: 'Python',      icon: <FaPython /> },
+      { name: 'C++',         icon: <SiCplusplus /> },
+      { name: 'React',       icon: <SiReact /> },
+      { name: 'FastAPI',     icon: <SiFastapi /> },
+      { name: 'SQL / MySQL', icon: <FaDatabase /> },
+      { name: 'WebSockets',  icon: <FaServer /> },
+    ],
+  },
+  {
+    key: 'neural',
+    label: '// NEURAL CORE',
+    color: '#bd00ff',
+    glow: 'rgba(189,0,255,0.25)',
+    skills: [
+      { name: 'PyTorch',         icon: <SiPytorch /> },
+      { name: 'TensorFlow',      icon: <SiTensorflow /> },
+      { name: 'Llama 3',         icon: <FaRobot /> },
+      { name: 'Gemini Vision',   icon: <SiOpencv /> },
+      { name: 'Whisper',         icon: <FaMicrophone /> },
+      { name: 'Scikit-Learn',    icon: <SiScikitlearn /> },
+    ],
+  },
+  {
+    key: 'tools',
+    label: '// INFRA & TOOLS',
+    color: '#ffd700',
+    glow: 'rgba(255,215,0,0.25)',
+    skills: [
+      { name: 'Docker',        icon: <SiDocker /> },
+      { name: 'Pathway',       icon: <FaProjectDiagram /> },
+      { name: 'Git / GitHub',  icon: <FaGitAlt /> },
+      { name: 'Figma',         icon: <FaFigma /> },
+      { name: 'Google Colab',  icon: <SiGooglecolab /> },
+    ],
+  },
+];
+
+// ---- SKILL ICON CARD ----
+const SkillCard = ({ skill, color, glow }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <motion.div
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      whileHover={{ y: -6, scale: 1.08 }}
+      initial={{ opacity: 0, scale: 0.85 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.35 }}
+      style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        gap: '12px', padding: '22px 16px',
+        borderRadius: '16px',
+        background: hovered ? `rgba(0,0,0,0.75)` : 'rgba(255,255,255,0.03)',
+        border: `1px solid ${hovered ? color : 'rgba(255,255,255,0.08)'}`,
+        boxShadow: hovered ? `0 0 24px ${glow}, inset 0 0 20px ${glow}` : 'none',
+        cursor: 'default',
+        transition: 'all 0.3s ease',
+        minWidth: '90px',
+      }}
+    >
+      <span style={{
+        fontSize: '2rem',
+        color: hovered ? color : 'rgba(255,255,255,0.55)',
+        filter: hovered ? `drop-shadow(0 0 8px ${color})` : 'none',
+        transition: 'all 0.3s ease',
+      }}>
+        {skill.icon}
+      </span>
+      <span style={{
+        fontSize: '0.7rem', fontWeight: '600',
+        color: hovered ? color : 'rgba(255,255,255,0.6)',
+        letterSpacing: '0.5px', textAlign: 'center',
+        transition: 'color 0.3s ease',
+      }}>
+        {skill.name}
+      </span>
+    </motion.div>
+  );
+};
+
+// ---- SKILLS SECTION ----
+const SkillsSection = ({ playSound }) => {
+  const [activeTab, setActiveTab] = useState('languages');
+  const active = skillCategories.find(c => c.key === activeTab);
+
+  return (
+    <motion.div
+      initial="hidden" whileInView="visible"
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.6 } } }}
+      style={{ width: '100%' }}
+    >
+      <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '40px', color: 'white' }}>TECHNICAL ARSENAL</h2>
+
+      {/* Category Tabs */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '40px', flexWrap: 'wrap' }}>
+        {skillCategories.map(cat => (
+          <motion.button
+            key={cat.key}
+            onClick={() => { setActiveTab(cat.key); playSound && playSound('click'); }}
+            onMouseEnter={() => playSound && playSound('hover')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            style={{
+              background: activeTab === cat.key ? cat.color : 'rgba(255,255,255,0.05)',
+              color: activeTab === cat.key ? '#000' : cat.color,
+              border: `1px solid ${cat.color}`,
+              borderRadius: '50px',
+              padding: '10px 26px',
+              fontSize: '0.78rem',
+              fontWeight: 'bold',
+              letterSpacing: '1.5px',
+              cursor: 'pointer',
+              boxShadow: activeTab === cat.key ? `0 0 16px ${cat.glow}` : 'none',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            {cat.label}
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Icon Grid */}
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        style={{
+          maxWidth: '700px', margin: '0 auto',
+          background: 'rgba(0,0,0,0.4)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderRadius: '24px',
+          border: `1px solid ${active.color}22`,
+          boxShadow: `0 0 60px ${active.glow}`,
+          padding: '36px 28px',
+        }}
+      >
+        {/* Top accent line */}
+        <div style={{ height: '2px', borderRadius: '2px', background: `linear-gradient(90deg, transparent, ${active.color}, transparent)`, marginBottom: '28px' }} />
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center' }}>
+          {active.skills.map((skill, i) => (
+            <motion.div
+              key={skill.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07 }}
+            >
+              <SkillCard skill={skill} color={active.color} glow={active.glow} />
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function Interface() {
-  const [showNav, setShowNav] = useState(false)
-  const { playSound } = useAudioInterface(); 
+  const { playSound } = useAudioInterface();
 
   return (
     <div style={{ color: 'white', fontFamily: "'Inter', sans-serif", width: '100%', overflowX: 'hidden' }}>
-      
+
       {/* 1. ORIGIN */}
       <Section id="home" playSound={playSound}>
-        <motion.div initial="hidden" whileInView="visible" variants={fadeIn} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '30px', flexWrap: 'wrap-reverse', textAlign: 'left', width: '100%' }}>
+        <motion.div initial="hidden" whileInView="visible" variants={fadeIn} style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '30px', flexWrap: 'wrap-reverse', textAlign: 'left', width: '100%', paddingTop: '60px' }}>
           <div style={{ flex: 1, minWidth: '280px' }}>
               <h1 style={{ fontSize: 'clamp(2.5rem, 10vw, 6rem)', margin: 0, lineHeight: '0.9', textShadow: '0 0 20px rgba(0,243,255,0.5)' }}>BIKRAM<br />HAWLADAR</h1>
               <p style={{ marginTop: '20px', fontSize: 'clamp(1rem, 4vw, 1.2rem)', color: '#00f3ff', letterSpacing: '3px' }}>ENTERING THE NEURAL CORE...</p>
@@ -322,63 +510,52 @@ export default function Interface() {
 
       {/* 3. SKILLS */}
       <Section id="skills" playSound={playSound}>
-        <motion.div initial="hidden" whileInView="visible" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }} style={{ width: '100%' }}>
-            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '40px', color: 'white' }}>TECHNICAL ARSENAL</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-                <div style={{ ...cardStyle, borderLeft: 'none', borderTop: '4px solid #00f3ff' }}>
-                    <h3 style={{ fontSize: '1.1rem', color: '#00f3ff', marginBottom: '15px', letterSpacing: '2px' }}>// LANGUAGES</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {['Python', 'C', 'SQL (MySQL)', 'Java', 'Firebase'].map(skill => (
-                            <motion.span key={skill} 
-                                onMouseEnter={() => playSound("hover")}
-                                whileHover={{ scale: 1.1, background: '#00f3ff', color: 'black' }} 
-                                style={{ background: 'rgba(0, 243, 255, 0.1)', border: '1px solid #00f3ff', padding: '6px 12px', borderRadius: '5px', fontSize: '0.8rem', cursor: 'default' }}>
-                                {skill}
-                            </motion.span>
-                        ))}
-                    </div>
-                </div>
-                <div style={{ ...cardStyle, borderLeft: 'none', borderTop: '4px solid #bd00ff' }}>
-                    <h3 style={{ fontSize: '1.1rem', color: '#bd00ff', marginBottom: '15px', letterSpacing: '2px' }}>// NEURAL CORE</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {['PyTorch', 'TensorFlow', 'CNNs', 'LSTMs', 'NLP', 'Computer Vision'].map(skill => (
-                            <motion.span key={skill} 
-                                onMouseEnter={() => playSound("hover")}
-                                whileHover={{ scale: 1.1, background: '#bd00ff', color: 'black' }} 
-                                style={{ background: 'rgba(189, 0, 255, 0.1)', border: '1px solid #bd00ff', padding: '6px 12px', borderRadius: '5px', fontSize: '0.8rem', cursor: 'default' }}>
-                                {skill}
-                            </motion.span>
-                        ))}
-                    </div>
-                </div>
-                <div style={{ ...cardStyle, borderLeft: 'none', borderTop: '4px solid #ffd700' }}>
-                    <h3 style={{ fontSize: '1.1rem', color: '#ffd700', marginBottom: '15px', letterSpacing: '2px' }}>// DEV TOOLS</h3>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {['Git / GitHub', 'Figma', 'VS Code', 'Pycharm', 'Google Colab'].map(skill => (
-                            <motion.span key={skill} 
-                                onMouseEnter={() => playSound("hover")}
-                                whileHover={{ scale: 1.1, background: '#ffd700', color: 'black' }} 
-                                style={{ background: 'rgba(255, 215, 0, 0.1)', border: '1px solid #ffd700', padding: '6px 12px', borderRadius: '5px', fontSize: '0.8rem', cursor: 'default' }}>
-                                {skill}
-                            </motion.span>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </motion.div>
+        <SkillsSection playSound={playSound} />
       </Section>
 
-      {/* 4. INTERNSHIPS */}
+      {/* 4. WORK EXPERIENCE */}
       <Section id="internships" playSound={playSound}>
         <motion.div initial="hidden" whileInView="visible" variants={fadeIn}>
              <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '40px' }}>PROFESSIONAL EXPERIENCE</h2>
              
-             <div style={containerStyle}>
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', maxWidth: '1000px', margin: '0 auto' }}>
+                {/* EXPERIENCE 1 (NEW) */}
+                <div style={{ 
+                    ...cardStyle, 
+                    borderLeft: 'none', 
+                    borderTop: '4px solid #00f3ff',
+                    display: 'flex', flexDirection: 'column', gap: '15px',
+                    boxShadow: '0 0 30px rgba(0, 243, 255, 0.1)'
+                }}>
+                    <div>
+                        <p style={{ color: '#00f3ff', letterSpacing: '2px', fontSize: '0.8rem', fontWeight: 'bold' }}>AI/ML RESEARCHER • DISPLACE 2026 CHALLENGE</p>
+                        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', margin: '10px 0', lineHeight: '1.2' }}>End-to-End Clinical Speech Processing Pipeline</h2>
+                    </div>
+                    <p style={{ lineHeight: '1.5', fontSize: '0.95rem', color: '#e0e0e0' }}>
+                        Bridging the gap in multilingual healthcare AI with advanced Speaker Diarization, solving "Code-mixing" (Hindi/English) in complex conversational audio.
+                    </p>
+                    <div style={{ background: 'rgba(0, 243, 255, 0.05)', padding: '15px', borderRadius: '10px', border: '1px solid rgba(0, 243, 255, 0.15)' }}>
+                        <h4 style={{ color: '#00f3ff', marginTop: 0, marginBottom: '8px', fontSize: '0.8rem', letterSpacing: '1px' }}>TECHNICAL DEEP-DIVE</h4>
+                        <ul style={{ margin: 0, paddingLeft: '20px', color: '#ccc', lineHeight: '1.5', fontSize: '0.85rem' }}>
+                            <li style={{ marginBottom: '5px' }}><strong>Diarization:</strong> Optimized ECAPA-TDNN and WavLM models using a 1.5s sliding window and 50% stride strategy.</li>
+                            <li style={{ marginBottom: '5px' }}><strong>Transcription:</strong> Tuned Whisper Large v3 Turbo and AI4Bharat IndicConformer with strict hallucination penalties.</li>
+                            <li><strong>Summarization:</strong> Cascaded architecture using IndicTrans2 and Zephyr-7B (4-bit NF4) for a 0.8004 BERTScore.</li>
+                        </ul>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        {['PyTorch', 'Whisper', 'AI4Bharat', 'IndicTrans2', 'Zephyr-7B', 'WavLM'].map((t) => (
+                            <span key={t} style={{ border: '1px solid rgba(0,243,255,0.4)', color: '#00f3ff', background: 'rgba(0, 243, 255, 0.05)', padding: '4px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold' }}>{t}</span>
+                        ))}
+                    </div>
+                </div>
+
+                {/* EXPERIENCE 2 (OLD INTERNSHIP) */}
                 <div style={{ 
                     ...cardStyle, 
                     borderLeft: 'none', 
                     borderTop: '4px solid #bd00ff',
-                    display: 'flex', flexDirection: 'column', gap: '15px' 
+                    display: 'flex', flexDirection: 'column', gap: '15px',
+                    boxShadow: '0 0 30px rgba(189, 0, 255, 0.05)'
                 }}>
                     <div>
                         <p style={{ color: '#bd00ff', letterSpacing: '2px', fontSize: '0.8rem', fontWeight: 'bold' }}>RESEARCH INTERN • NIT DURGAPUR</p>
@@ -387,79 +564,93 @@ export default function Interface() {
                     <p style={{ lineHeight: '1.5', fontSize: '0.95rem', color: '#e0e0e0' }}>
                         Spearheaded neuro-engineering research to classify hemodynamic brain patterns. I transformed raw physiological signals into "Discriminative Images" to train Vision Transformers.
                     </p>
-                    <div style={{ background: 'rgba(189, 0, 255, 0.1)', padding: '15px', borderRadius: '10px', border: '1px solid rgba(189, 0, 255, 0.2)' }}>
-                        <h4 style={{ color: '#bd00ff', marginTop: 0, marginBottom: '8px', fontSize: '0.8rem', letterSpacing: '1px' }}>KEY RESEARCH MODULES</h4>
-                        <ul style={{ margin: 0, paddingLeft: '20px', color: '#ccc', lineHeight: '1.5', fontSize: '0.85rem' }}>
-                            <li style={{ marginBottom: '5px' }}><strong>Signal Engineering (MATLAB):</strong> Processed raw NIRS signals using the BBCI Toolbox filters.</li>
-                            <li style={{ marginBottom: '5px' }}><strong>Deep Learning Pipeline:</strong> Optimized a Vision Transformer (ViT-B/16) using Transfer Learning.</li>
-                            <li><strong>Explainable AI (XAI):</strong> Deployed Integrated Gradients (Captum) to validate the model's focus.</li>
-                        </ul>
-                    </div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {['MATLAB', 'Python', 'PyTorch', 'ViT', 'XAI'].map((t) => (
-                            <span key={t} style={{ border: '1px solid #bd00ff', color: '#bd00ff', background: 'rgba(189, 0, 255, 0.1)', padding: '4px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold' }}>{t}</span>
-                        ))}
-                    </div>
-                </div>
-                <div style={imageStyle}>
-                    <img src="\NIT_Durgapur.jpeg" alt="Research Lab" style={{ width: '100%', height: 'auto', display: 'block' }} />
                 </div>
             </div>
         </motion.div>
       </Section>
 
-      {/* 5. PROJECTS */}
+      {/* 5. PROJECTS REDESIGN (Masonry/Grid) */}
       <Section id="projects" playSound={playSound}>
          <motion.div initial="hidden" whileInView="visible" variants={fadeIn}>
-            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '40px' }}>FEATURED CREATIONS</h2>
+            <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '50px', textShadow: '0 0 20px rgba(0,243,255,0.3)' }}>FEATURED CREATIONS</h2>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-                {projects.map((project, index) => (
-                    <motion.div 
-                        key={project.id}
-                        onMouseEnter={() => playSound("hover")}
-                        style={{ 
-                            background: 'rgba(18, 18, 18, 0.8)', 
-                            backdropFilter: 'blur(10px)', 
-                            WebkitBackdropFilter: 'blur(10px)', 
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            borderRadius: '20px',
-                            overflow: 'hidden',
-                            display: 'flex', flexDirection: 'column',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-                            transition: 'border-color 0.3s'
-                        }}
-                        whileHover={{ borderColor: themeColors[index % 3] }}
-                    >
-                        <div style={{ padding: '30px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', marginBottom: '15px', gap: '10px' }}>
-                                <div>
-                                    <h3 style={{ color: '#fff', fontSize: '1.5rem', margin: 0 }}>{project.title}</h3>
-                                    <span style={{ color: '#00f3ff', fontSize: '0.8rem', letterSpacing: '1px', fontWeight: 'bold' }}>{project.subtitle}</span>
+            <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
+                gap: '24px',
+                width: '100%',
+                maxWidth: '1200px',
+                margin: '0 auto'
+            }}>
+                {projects.map((project, index) => {
+                    const tColor = themeColors[index % 3];
+                    return (
+                        <motion.div 
+                            key={project.id}
+                            onMouseEnter={() => playSound("hover")}
+                            whileHover={{ y: -8, scale: 1.02 }}
+                            style={{ 
+                                background: 'rgba(5, 5, 8, 0.65)', 
+                                backdropFilter: 'blur(16px)', 
+                                WebkitBackdropFilter: 'blur(16px)', 
+                                border: `1px solid rgba(255,255,255,0.08)`,
+                                borderRadius: '24px',
+                                overflow: 'hidden',
+                                display: 'flex', flexDirection: 'column',
+                                boxShadow: `0 0 0 rgba(0,0,0,0)`, // Animate shadow on hover
+                                transition: 'all 0.3s ease',
+                                position: 'relative'
+                            }}
+                        >
+                            {/* Glowing Neon Line at the top of card */}
+                            <div style={{ height: '4px', width: '100%', background: `linear-gradient(90deg, transparent, ${tColor}, transparent)` }} />
+                            
+                            <div style={{ padding: '32px 28px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ marginBottom: '20px' }}>
+                                    <h3 style={{ color: '#fff', fontSize: '1.4rem', margin: '0 0 8px 0', lineHeight: '1.3' }}>{project.title}</h3>
+                                    <span style={{ color: tColor, fontSize: '0.75rem', letterSpacing: '1px', fontWeight: 'bold', textTransform: 'uppercase' }}>{project.subtitle}</span>
                                 </div>
-                                <a href={project.github} target="_blank" style={{ color: '#000', background: '#ffd700', padding: '8px 20px', borderRadius: '25px', textDecoration: 'none', fontWeight: 'bold', fontSize: '0.8rem', boxShadow: '0 0 15px rgba(255, 215, 0, 0.4)' }}>GITHUB ↗</a>
+                                
+                                <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: 'rgba(255,255,255,0.7)', flex: 1, marginBottom: '25px' }}>
+                                    {project.description}
+                                </p>
+
+                                <div style={{ 
+                                    background: 'rgba(255,255,255,0.02)', 
+                                    padding: '16px', 
+                                    borderRadius: '12px', 
+                                    marginBottom: '25px', 
+                                    border: '1px solid rgba(255,255,255,0.04)' 
+                                }}>
+                                    <h4 style={{ color: 'white', opacity: 0.9, marginTop: 0, marginBottom: '12px', fontSize: '0.75rem', letterSpacing: '1px' }}>KEY ARCHITECTURE</h4>
+                                    <ul style={{ margin: 0, paddingLeft: '18px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.5', fontSize: '0.8rem' }}>
+                                        {project.points.map((point, i) => <li key={i} style={{ marginBottom: '6px' }}>{point}</li>)}
+                                    </ul>
+                                </div>
+
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: 'auto' }}>
+                                    {project.tech.map((t, i) => (
+                                        <span key={t} style={{ 
+                                            border: `1px solid ${tColor}44`, color: tColor, 
+                                            background: `${tColor}11`, padding: '4px 12px', 
+                                            borderRadius: '20px', fontSize: '0.65rem', fontWeight: 'bold',
+                                            letterSpacing: '0.5px'
+                                        }}>
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                            <p style={{ fontSize: '0.95rem', lineHeight: '1.5', color: '#e0e0e0', marginBottom: '20px' }}>{project.description}</p>
-                            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '10px', marginBottom: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                <h4 style={{ color: '#aaa', marginTop: 0, marginBottom: '8px', fontSize: '0.8rem', letterSpacing: '1px' }}>KEY ACHIEVEMENTS</h4>
-                                <ul style={{ margin: 0, paddingLeft: '20px', color: '#ccc', lineHeight: '1.5', fontSize: '0.9rem' }}>{project.points.map((point, i) => <li key={i} style={{ marginBottom: '5px' }}>{point}</li>)}</ul>
-                            </div>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                {project.tech.map((t, i) => {
-                                    const color = themeColors[i % themeColors.length];
-                                    return <span key={t} style={{ border: `1px solid ${color}`, color: color, background: `rgba(${i % 3 === 0 ? '0, 243, 255' : i % 3 === 1 ? '189, 0, 255' : '255, 215, 0'}, 0.1)`, padding: '4px 10px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: '500' }}>{t}</span>
-                                })}
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
+                        </motion.div>
+                    )
+                })}
             </div>
          </motion.div>
       </Section>
 
       {/* 6. CONTACT */}
       <Section id="contact" playSound={playSound}>
-        <motion.div initial="hidden" whileInView={() => { setShowNav(true); return "visible"; }} onViewportLeave={() => setShowNav(false)} variants={fadeIn} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '30px' }}>
+        <motion.div initial="hidden" whileInView="visible" variants={fadeIn} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '30px' }}>
             <h1 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', textAlign: 'center' }}>INITIATE CONNECTION</h1>
             <div style={{ display: 'flex', gap: '20px', fontSize: '1.8rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <a href="https://github.com/Phantomcoder9632" target="_blank" onMouseEnter={() => playSound("hover")} style={{ color: 'white', transition: '0.3s' }} onMouseOver={e => e.target.style.color='#00f3ff'} onMouseOut={e => e.target.style.color='white'}><FaGithub /></a>
@@ -473,17 +664,6 @@ export default function Interface() {
                 <ContactForm playSound={playSound} />
             </div>
         </motion.div>
-
-        <motion.nav initial={{ opacity: 0, y: -20 }} animate={{ opacity: showNav ? 1 : 0, y: showNav ? 0 : -20 }} transition={{ duration: 0.5 }} style={{ position: 'fixed', top: '20px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(0,0,0,0.8)', padding: '10px 15px', borderRadius: '50px', border: '1px solid #333', zIndex: 1000, display: 'flex', gap: '10px', overflowX: 'auto', maxWidth: '95vw', whiteSpace: 'nowrap' }}>
-            {['Home', 'Education', 'Skills', 'Internships', 'Projects', 'Contact'].map((item) => (
-                <button key={item} 
-                    onMouseEnter={() => playSound("hover")}
-                    onClick={() => document.getElementById(item.toLowerCase()).scrollIntoView({ behavior: 'smooth' })} 
-                    style={{ background: 'none', border: 'none', color: '#ccc', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem', flexShrink: 0 }}>
-                    {item}
-                </button>
-            ))}
-        </motion.nav>
       </Section>
     </div>
   )

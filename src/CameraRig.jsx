@@ -1,15 +1,20 @@
 import { useFrame, useThree } from '@react-three/fiber'
-import { useScroll } from '@react-three/drei'
 import * as THREE from 'three'
-import { getTunnelPath } from './NeuralNetwork3D' // Import the path logic
+import { getTunnelPath } from './NeuralNetwork3D'
 
 export default function CameraRig() {
   const { camera } = useThree()
-  const scroll = useScroll()
 
-  useFrame((state, delta) => {
-    // Scroll runs from 0 to 1
-    const t = scroll.offset 
+  useFrame((state) => {
+    // Check total scroll height vs viewport
+    const maxScroll = document.body.scrollHeight - window.innerHeight
+    // If no scroll height (e.g., loading), t = 0
+    let t = 0
+    if (maxScroll > 0) {
+      t = window.scrollY / maxScroll
+    }
+    // Clamp between 0 and 1 just in case of overscroll physics
+    t = Math.max(0, Math.min(1, t))
     
     // MAPPING SCROLL TO DEPTH (Z)
     // Start at Z=10, End deeper at Z=-70
