@@ -519,7 +519,7 @@ export default function Interface() {
              <h2 style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textAlign: 'center', marginBottom: '40px' }}>PROFESSIONAL EXPERIENCE</h2>
              
              <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', maxWidth: '1000px', margin: '0 auto' }}>
-                {/* EXPERIENCE 1 (NEW) */}
+                {/* EXPERIENCE 1 (DISPLACE 2026) */}
                 <div style={{ 
                     ...cardStyle, 
                     borderLeft: 'none', 
@@ -532,24 +532,24 @@ export default function Interface() {
                         <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', margin: '10px 0', lineHeight: '1.2' }}>End-to-End Clinical Speech Processing Pipeline</h2>
                     </div>
                     <p style={{ lineHeight: '1.5', fontSize: '0.95rem', color: '#e0e0e0' }}>
-                        Bridging the gap in multilingual healthcare AI with advanced Speaker Diarization, solving "Code-mixing" (Hindi/English) in complex conversational audio.
+                        Tackled the complex challenge of processing spontaneous, code-mixed (Hindi/English) clinical dialogues recorded in noisy rural healthcare settings. Built a highly accurate cascaded AI pipeline to identify speakers, transcribe dialects, and synthesize medical facts into professional clinical summaries.
                     </p>
                     <div style={{ background: 'rgba(0, 243, 255, 0.05)', padding: '15px', borderRadius: '10px', border: '1px solid rgba(0, 243, 255, 0.15)' }}>
-                        <h4 style={{ color: '#00f3ff', marginTop: 0, marginBottom: '8px', fontSize: '0.8rem', letterSpacing: '1px' }}>TECHNICAL DEEP-DIVE</h4>
+                        <h4 style={{ color: '#00f3ff', marginTop: 0, marginBottom: '8px', fontSize: '0.8rem', letterSpacing: '1px' }}>TECHNICAL ARCHITECTURE & ACHIEVEMENTS</h4>
                         <ul style={{ margin: 0, paddingLeft: '20px', color: '#ccc', lineHeight: '1.5', fontSize: '0.85rem' }}>
-                            <li style={{ marginBottom: '5px' }}><strong>Diarization:</strong> Optimized ECAPA-TDNN and WavLM models using a 1.5s sliding window and 50% stride strategy.</li>
-                            <li style={{ marginBottom: '5px' }}><strong>Transcription:</strong> Tuned Whisper Large v3 Turbo and AI4Bharat IndicConformer with strict hallucination penalties.</li>
-                            <li><strong>Summarization:</strong> Cascaded architecture using IndicTrans2 and Zephyr-7B (4-bit NF4) for a 0.8004 BERTScore.</li>
+                            <li style={{ marginBottom: '5px' }}><strong>Acoustic Preprocessing:</strong> Engineered custom sliding-window algorithms to process long-form 10-minute audio dynamically filtering out absolute silence to optimize GPU compute efficiency.</li>
+                            <li style={{ marginBottom: '5px' }}><strong>Multilingual ASR & Diarization:</strong> Conducted zero-shot evaluation across IndicConformer, SeamlessM4T v2, and Whisper Large v3 Turbo. Experimented with WavLM and Pyannote for foreground speech overlap.</li>
+                            <li><strong>Generative NLP:</strong> Developed a robust NLP pipeline leveraging IndicTrans2 for Hindi-to-English translation followed by a zero-shot, 4-bit quantized Zephyr-7B LLM extracting medical facts with a 0.8004 BERTScore.</li>
                         </ul>
                     </div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                        {['PyTorch', 'Whisper', 'AI4Bharat', 'IndicTrans2', 'Zephyr-7B', 'WavLM'].map((t) => (
+                        {['PyTorch', 'CUDA', 'WavLM', 'Whisper v3 Turbo', 'IndicConformer', 'Zephyr-7B (4-bit)', 'IndicTrans2', 'Hugging Face'].map((t) => (
                             <span key={t} style={{ border: '1px solid rgba(0,243,255,0.4)', color: '#00f3ff', background: 'rgba(0, 243, 255, 0.05)', padding: '4px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold' }}>{t}</span>
                         ))}
                     </div>
                 </div>
 
-                {/* EXPERIENCE 2 (OLD INTERNSHIP) */}
+                {/* EXPERIENCE 2 (NIT DURGAPUR) */}
                 <div style={{ 
                     ...cardStyle, 
                     borderLeft: 'none', 
@@ -558,12 +558,25 @@ export default function Interface() {
                     boxShadow: '0 0 30px rgba(189, 0, 255, 0.05)'
                 }}>
                     <div>
-                        <p style={{ color: '#bd00ff', letterSpacing: '2px', fontSize: '0.8rem', fontWeight: 'bold' }}>RESEARCH INTERN • NIT DURGAPUR</p>
-                        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', margin: '10px 0', lineHeight: '1.2' }}>Analysis of Cognitive Load using fNIRS & Explainable AI</h2>
+                        <p style={{ color: '#bd00ff', letterSpacing: '2px', fontSize: '0.8rem', fontWeight: 'bold' }}>DEEP LEARNING / BCI RESEARCH ASSISTANT • NIT DURGAPUR</p>
+                        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', margin: '10px 0', lineHeight: '1.2' }}>Interpretable Brain-Computer Interface (BCI) using Vision Transformers</h2>
                     </div>
                     <p style={{ lineHeight: '1.5', fontSize: '0.95rem', color: '#e0e0e0' }}>
-                        Spearheaded neuro-engineering research to classify hemodynamic brain patterns. I transformed raw physiological signals into "Discriminative Images" to train Vision Transformers.
+                        Developed an end-to-end Deep Learning pipeline to classify human cognitive states (Motor Imagery and Rest) using Functional Near-Infrared Spectroscopy (fNIRS) brain signal data. Bridged neuroimaging and advanced computer vision to decode brain activity and make AI decisions transparent.
                     </p>
+                    <div style={{ background: 'rgba(189, 0, 255, 0.05)', padding: '15px', borderRadius: '10px', border: '1px solid rgba(189, 0, 255, 0.15)' }}>
+                        <h4 style={{ color: '#bd00ff', marginTop: 0, marginBottom: '8px', fontSize: '0.8rem', letterSpacing: '1px' }}>KEY CONTRIBUTIONS</h4>
+                        <ul style={{ margin: 0, paddingLeft: '20px', color: '#ccc', lineHeight: '1.5', fontSize: '0.85rem' }}>
+                            <li style={{ marginBottom: '5px' }}><strong>Signal Processing:</strong> Built a MATLAB pipeline to extract and clean 72-channel hemodynamic signals, applying 0.2 Hz low-pass filters to remove cardiac noise.</li>
+                            <li style={{ marginBottom: '5px' }}><strong>Spatial-Temporal Mapping & ViTs:</strong> Transformed raw time-series brain data into 2D scalp maps using overlapping sliding windows, training a Vision Transformer to process the image sequences.</li>
+                            <li><strong>Explainable AI (XAI):</strong> Implemented SHAP (SHapley Additive exPlanations) to interpret the ViT’s decision-making, mapping predictions back to specific biological brain regions.</li>
+                        </ul>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        {['Python', 'MATLAB', 'PyTorch', 'Vision Transformers (ViT)', 'SHAP', 'BBCI Toolbox', 'Git'].map((t) => (
+                            <span key={t} style={{ border: '1px solid rgba(189, 0, 255, 0.4)', color: '#bd00ff', background: 'rgba(189, 0, 255, 0.05)', padding: '4px 10px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold' }}>{t}</span>
+                        ))}
+                    </div>
                 </div>
             </div>
         </motion.div>
